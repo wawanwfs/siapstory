@@ -21,6 +21,27 @@
 
 ---
 
+
+
+## 🌐 LIVE WEBSITE / AKSES LANGSUNG
+
+<div align="center">
+
+### ✳ StorySiap sekarang bisa direview online
+
+| 🚀 Halaman | URL akses |
+| :-- | :-- |
+| **Immersive Landing Page** | **https://wawanwfs.github.io/siapstory/** |
+| **Creative Studio** | **https://wawanwfs.github.io/siapstory/studio.html** |
+| **Source Code** | **https://github.com/wawanwfs/siapstory** |
+| **Deployment Status** | **https://github.com/wawanwfs/siapstory/actions/workflows/deploy-pages.yml** |
+
+**[▶ OPEN LIVE EXPERIENCE](https://wawanwfs.github.io/siapstory/) · [✳ OPEN CREATIVE STUDIO](https://wawanwfs.github.io/siapstory/studio.html)**
+
+<sub>GitHub Pages · Automatic deployment from the \`main\` branch · URL tidak berubah saat source diperbarui.</sub>
+
+</div>
+
 ## ✳ 01 / Beyond the ordinary landing page
 
 **StorySiap** dirancang sebagai pengalaman kreatif yang bergerak bersama pengunjung, dengan arah visual dark cinematic, aksen violet, kedalaman 3D, dan interaksi yang berhubungan dengan posisi scroll.
