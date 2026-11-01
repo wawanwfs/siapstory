@@ -1,5 +1,4 @@
 name: Publish StorySiap
-
 on:
   push:
     branches: [main]
@@ -8,53 +7,73 @@ on:
       - 'tests/**'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
-
 jobs:
   verify:
-    name: Verify website build
+    name: Verify cinematic build
     runs-on: ubuntu-latest
     steps:
-      - name: Check out StorySiap
-        uses: actions/checkout@v4
-      - name: Check required pages exist
+      - uses: actions/checkout@v4
+      - name: Check pages, asset references and JavaScript syntax
+        shell: bash
         run: |
           test -s dist/index.html
           test -s dist/studio.html
-          grep -qi '</html>' dist/index.html
-          grep -qi '</html>' dist/studio.html
-          echo "StorySiap pages verified"
-      - name: Run source tests when available
-        run: |
-          if compgen -G 'tests/*.test.mjs' >/dev/null; then
-            node --test tests/*.test.mjs
-          else
-            echo "No source test suite currently checked in; HTML smoke checks passed."
+          test -s dist/story-director.css
+          test -s dist/story-director.mjs
+          grep -q 'src="story-director.mjs"' dist/index.html
+          grep -q 'href="story-director.css"' dist/index.html
+          if grep -q 'id="storysiap-v6-motion"' dist/index.html; then
+            echo "ERROR: old v6 director must not be shipped"
+            exit 1
           fi
+          node --check dist/story-director.mjs
+          if test -d tests && compgen -G 'tests/*.test.mjs' > /dev/null; then
+            node --test tests/*.test.mjs
+          fi
+          echo "StorySiap: single director and static build validated"
   deploy:
-    name: Publish to GitHub Pages
+    name: Deploy to GitHub Pages
     needs: verify
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: \${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Check out StorySiap
-        uses: actions/checkout@v4
-      - name: Configure existing Pages site
+      - uses: actions/checkout@v4
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Upload website artifact
+      - name: Upload production website
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
       - name: Deploy StorySiap
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Smoke-test public URLs and new director
+        env:
+          SITE: https://wawanwfs.github.io/siapstory
+        shell: bash
+        run: |
+          set -e
+          echo "Verifying public site: $SITE"
+          for attempt in $(seq 1 18); do
+            if curl -fsSL --max-time 12 "$SITE/?release=\${GITHUB_SHA}" -o /tmp/storysiap-live.html \
+              && grep -q 'src="story-director.mjs"' /tmp/storysiap-live.html \
+              && curl -fsSL --max-time 12 "$SITE/studio.html?release=\${GITHUB_SHA}" -o /dev/null \
+              && curl -fsSL --max-time 12 "$SITE/story-director.mjs?release=\${GITHUB_SHA}" -o /dev/null \
+              && curl -fsSL --max-time 12 "$SITE/story-director.css?release=\${GITHUB_SHA}" -o /dev/null; then
+              echo "PASS: landing, studio and motion assets are accessible"
+              exit 0
+            fi
+            echo "Pages CDN still publishing (attempt $attempt/18)"
+            sleep 5
+          done
+          echo "ERROR: public website or motion assets did not pass HTTP checks"
+          exit 1
