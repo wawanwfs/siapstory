@@ -1,83 +1,115 @@
 <div align="center">
 
-# ✳ storysiap®
+<img src="docs/cover.svg" width="100%" alt="StorySiap — cinematic creative universe" />
 
-### EVERY MOMENT HAS A STORY
+<br /><br />
 
-**The immersive creative studio, built for the feeling.**
+### ✦ Every moment has a story.
 
-[![Live Preview](https://img.shields.io/badge/LIVE_PREVIEW-VIEW_SITE-C5A4FA?style=for-the-badge&labelColor=151020)](https://wawanwfs.github.io/siapstory/)
-[![Creative Studio](https://img.shields.io/badge/CREATIVE_STUDIO-OPEN_EDITOR-D3F075?style=for-the-badge&labelColor=151020)](https://wawanwfs.github.io/siapstory/studio.html)
-[![GitHub Pages](https://img.shields.io/badge/DEPLOY-GITHUB_ACTIONS-20202B?style=for-the-badge&logo=githubactions)](https://github.com/wawanwfs/siapstory/actions/workflows/deploy-pages.yml)
+**A scroll-driven cinematic experience & a creative space for the moments worth keeping.**
 
-**SCROLL · FEEL · CREATE · REMEMBER**
+[![Open Live Experience](https://img.shields.io/badge/◉_OPEN_LIVE_EXPERIENCE-C5A4FA?style=for-the-badge&labelColor=12101C&color=C5A4FA)](https://wawanwfs.github.io/siapstory/)
+[![Launch Creative Studio](https://img.shields.io/badge/✳_LAUNCH_CREATIVE_STUDIO-D7F4A4?style=for-the-badge&labelColor=12101C&color=D7F4A4)](https://wawanwfs.github.io/siapstory/studio.html)
+
+[![Pages deployment](https://github.com/wawanwfs/siapstory/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/wawanwfs/siapstory/actions/workflows/deploy-pages.yml)
+![Static](https://img.shields.io/badge/ARCHITECTURE-STATIC_&_LOCAL--FIRST-241B33?style=flat-square)
+![Web](https://img.shields.io/badge/PLATFORM-WEB-241B33?style=flat-square)
+
+<sub>FEEL THE MOMENT · FOLLOW THE MOTION · MAKE IT YOURS</sub>
 
 </div>
 
 ---
 
-## 01 / The experience
+## ✳ 01 / Beyond the ordinary landing page
 
-StorySiap adalah pengalaman landing page sinematik dengan animasi yang mengikuti posisi scroll. Dibangun sebagai kreativitas visual untuk mempersiapkan foto dan video story, dengan kendali interaksi serta Studio pemrosesan lokal.
+**StorySiap** dirancang sebagai pengalaman kreatif yang bergerak bersama pengunjung, dengan arah visual dark cinematic, aksen violet, kedalaman 3D, dan interaksi yang berhubungan dengan posisi scroll.
 
-> **Momen kecil. Cerita besar.** Satu alur visual dari pembuka ke akhir — bukan sekadar animasi reveal terpisah.
+> A little moment. A whole universe.
 
-## 02 / Cinematic interactions
+<table>
+<tr><td width="50%" valign="top">
 
-| Chapter | Experience |
+### ◉ The Experience
+- Ambient lighting and floating visual layers
+- Scroll-linked chapter progression
+- Perspective and interactive depth effects
+- Pointer-responsive motion
+- Cinematic storytelling and responsive composition
+
+</td><td width="50%" valign="top">
+
+### ✦ In Your Control
+- Auto-scroll Play / Pause
+- Continuous and chapter-based playback
+- Adjustable scroll pacing
+- Navigation across the story
+- Motion controls and reduced-motion support
+
+</td></tr>
+</table>
+
+## ◇ 02 / Creative Studio
+
+**Your image, your atmosphere, your story.**
+
+Open the [Creative Studio](https://wawanwfs.github.io/siapstory/studio.html) to upload an image and give it your own look.
+
+| Tool | Purpose |
 | --- | --- |
-| ✦ One scroll timeline | Atmosfer, gerak lapisan, dan transisi mengikuti satu progres scroll. |
-| ◉ Immersive portal | Cerita sinematik tiga adegan: Feel → Create → Share. |
-| ↕ Auto-scroll | ON/OFF di kanan bawah, tiga kecepatan, mode alir atau mode bab. |
-| ✳ Living atmosphere | Orbits, depth, 3D perspective, pointer-reactive movement. |
-| ◐ Before / after | Kontrol perbandingan warna interaktif. |
-| ◇ Responsive | Komposisi responsif untuk desktop dan mobile. |
-| ♿ Reduced motion | Motion OFF serta preferensi aksesibilitas sistem. |
+| **Composition** | Story / feed / square / landscape framing |
+| **Color** | Brightness, contrast, saturation, and cinematic presets |
+| **Finishing** | Warmth, film grain, and vignette |
+| **Live preview** | Inspect the result directly in the browser |
+| **Export** | Save edited photos as PNG |
 
-## 03 / Creative Studio
+**Local first.** Photo processing takes place in your own browser. Video preview is supported where the browser allows it; video rendering and video export are **not yet supported** in the lightweight published Studio.
 
-Creative Studio memungkinkan upload foto lalu penyesuaian rasio, brightness, contrast, saturation, warmth, grain dan vignette, dengan ekspor PNG langsung dalam browser. Video bisa dipreview, tetapi **ekspor video belum tersedia pada editor ringan yang saat ini diterbitkan**.
+---
 
-**Privacy first:** media diproses secara lokal di browser; tidak dikirim ke server StorySiap.
-
-## 04 / How it works
+## ⌁ 03 / Architecture
 
 ```mermaid
-flowchart TD
-  A[Manual Scroll / Auto-Scroll] --> B[Unified Scroll Timeline]
-  B --> C[Visual Continuity]
-  B --> D[Atmosphere & Portal]
-  B --> E[Transitions Across Chapters]
-  F[Creative Studio] --> G[Local Media Processing]
-  G --> H[Preview & Export]
+flowchart LR
+    A[User Scroll] --> D[Motion Director]
+    B[Auto Scroll] --> D
+    C[Pointer Input] --> D
+    D --> E[Cinematic Sections]
+    D --> F[Visual Atmosphere]
+    D --> G[Chapter Transitions]
+    H[Creative Studio] --> I[Browser Canvas]
+    I --> J[Image Export]
 ```
 
-### Run locally
+The published website lives in `dist/` and is deployed as a static site. GitHub Actions keeps the public site updated when its deployment workflow succeeds.
 
-Open `dist/index.html` in a compatible browser. For local server:
+### Local preview
 
 ```bash
+git clone https://github.com/wawanwfs/siapstory.git
+cd siapstory
 python -m http.server 8000 --directory dist
 ```
 
-Then visit http://localhost:8000/ .
+Navigate to `http://localhost:8000/`. Or open `dist/index.html` directly when your browser permits standalone HTML assets.
 
-### Deploy
+### Deployment
 
-The workflow `.github/workflows/deploy-pages.yml` deploys the `dist/` directory on every push to `main`.
+The `.github/workflows/deploy-pages.yml` workflow validates the published HTML, uploads the `dist/` folder, and deploys it to GitHub Pages.
 
-**One-time setup:** go to **Settings → Pages → Build and deployment → Source → GitHub Actions**. Run the workflow from **Actions → Publish StorySiap** if necessary.
-
-Website: **https://wawanwfs.github.io/siapstory/**
+- [Website](https://wawanwfs.github.io/siapstory/)
+- [Creative Studio](https://wawanwfs.github.io/siapstory/studio.html)
+- [Deployment workflow](https://github.com/wawanwfs/siapstory/actions/workflows/deploy-pages.yml)
+- [Repository settings](https://github.com/wawanwfs/siapstory/settings/pages)
 
 ---
 
 <div align="center">
 
-### ✳ A little moment. A whole universe.
+### ✳ Make every moment a story.
 
-*Made to move. Made to remember.*
+**Designed to feel alive. Built to make memories.**
 
-**© 2026 storysiap®**
+<sub>© 2026 StorySiap® · Crafted with motion, made for memories.</sub>
 
 </div>
