@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: \${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: Configure GitHub Pages
@@ -64,11 +64,11 @@ jobs:
           set -e
           echo "Verifying public site: $SITE"
           for attempt in $(seq 1 18); do
-            if curl -fsSL --max-time 12 "$SITE/?release=\${GITHUB_SHA}" -o /tmp/storysiap-live.html \
+            if curl -fsSL --max-time 12 "$SITE/?release=${GITHUB_SHA}" -o /tmp/storysiap-live.html \
               && grep -q 'src="story-director.mjs"' /tmp/storysiap-live.html \
-              && curl -fsSL --max-time 12 "$SITE/studio.html?release=\${GITHUB_SHA}" -o /dev/null \
-              && curl -fsSL --max-time 12 "$SITE/story-director.mjs?release=\${GITHUB_SHA}" -o /dev/null \
-              && curl -fsSL --max-time 12 "$SITE/story-director.css?release=\${GITHUB_SHA}" -o /dev/null; then
+              && curl -fsSL --max-time 12 "$SITE/studio.html?release=${GITHUB_SHA}" -o /dev/null \
+              && curl -fsSL --max-time 12 "$SITE/story-director.mjs?release=${GITHUB_SHA}" -o /dev/null \
+              && curl -fsSL --max-time 12 "$SITE/story-director.css?release=${GITHUB_SHA}" -o /dev/null; then
               echo "PASS: landing, studio and motion assets are accessible"
               exit 0
             fi
