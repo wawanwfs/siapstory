@@ -114,8 +114,7 @@ function render(){
   const maxScroll=Math.max(1,document.documentElement.scrollHeight-viewport);
   const global=clamp(scrollYNow/maxScroll);
   const pose=sample(focus);
-  const dir=Math.sign(scrollYNow-(window.__storyPreviousScroll||0));
-  window.__storyPreviousScroll=scrollYNow;
+  lastScene=pose.index;
   root.style.setProperty('--story-progress',global.toFixed(6));
   root.style.setProperty('--story-color',pose.c.join(','));
   root.style.setProperty('--story-camera-rotation',pose.r.toFixed(3)+'deg');
