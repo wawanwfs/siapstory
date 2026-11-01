@@ -1,31 +1,60 @@
 name: Publish StorySiap
+
 on:
   push:
     branches: [main]
+    paths:
+      - 'dist/**'
+      - 'tests/**'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
+  verify:
+    name: Verify website build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out StorySiap
+        uses: actions/checkout@v4
+      - name: Check required pages exist
+        run: |
+          test -s dist/index.html
+          test -s dist/studio.html
+          grep -qi '</html>' dist/index.html
+          grep -qi '</html>' dist/studio.html
+          echo "StorySiap pages verified"
+      - name: Run source tests when available
+        run: |
+          if compgen -G 'tests/*.test.mjs' >/dev/null; then
+            node --test tests/*.test.mjs
+          else
+            echo "No source test suite currently checked in; HTML smoke checks passed."
+          fi
   deploy:
+    name: Publish to GitHub Pages
+    needs: verify
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Configure GitHub Pages
+      - name: Check out StorySiap
+        uses: actions/checkout@v4
+      - name: Configure existing Pages site
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Upload website
+      - name: Upload website artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-      - id: deployment
-        name: Deploy to GitHub Pages
+      - name: Deploy StorySiap
+        id: deployment
         uses: actions/deploy-pages@v4
