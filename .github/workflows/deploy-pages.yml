@@ -45,6 +45,10 @@ jobs:
         run: |
           npm install --no-save playwright@1.58.2
           npx playwright install --with-deps chromium
+      - name: Install FFmpeg test encoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
       - name: Export a real video in Chromium
         run: node tests/studio-e2e.mjs
   deploy:
