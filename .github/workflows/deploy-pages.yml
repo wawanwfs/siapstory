@@ -34,10 +34,19 @@ jobs:
             exit 1
           fi
           node --check dist/story-director.mjs
+          node --check dist/studio-engine.mjs
+          node --check tests/studio-e2e.mjs
+          grep -q 'src="studio-engine.mjs"' dist/studio.html
           if test -d tests && compgen -G 'tests/*.test.mjs' > /dev/null; then
             node --test tests/*.test.mjs
           fi
           echo "StorySiap: single director and static build validated"
+      - name: Install browser test tools
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Export a real video in Chromium
+        run: node tests/studio-e2e.mjs
   deploy:
     name: Deploy to GitHub Pages
     needs: verify
