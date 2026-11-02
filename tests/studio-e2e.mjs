@@ -36,13 +36,13 @@ try{
   await page.goto('http://127.0.0.1:'+port+'/studio.html',{waitUntil:'load'});
   assert.equal(await page.locator('#export').isDisabled(),true,'Export should be disabled before selecting media');
   await page.locator('#upload').setInputFiles(input);
-  await page.waitForFunction(()=>window.storysiapVideo&&window.storysiapVideo.duration>=3,{timeout:12000});
+  await page.waitForFunction(()=>window.storysiapVideo&&window.storysiapVideo.duration>=3,null,{timeout:12000});
   assert.equal(await page.locator('#videoTools').isVisible(),true,'Video timeline visible');
   const duration=await page.evaluate(()=>window.storysiapVideo.duration);
   assert.ok(duration>=3,'decoded video duration unavailable');
   await page.locator('#size').selectOption('540');
   await page.locator('#format').selectOption('webm');
-  await page.locator('#clipLength').fill('2');
+  await page.locator('#clipLength').evaluate(el=>{el.value='2';el.dispatchEvent(new Event('input',{bubbles:true}))});
   await page.locator('#keepAudio').check();
   await page.locator('#caption').fill('STORYSIAP TEST');
   await page.locator('#export').click();
