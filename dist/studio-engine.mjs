@@ -15,7 +15,7 @@ const stamp=t=>{if(!Number.isFinite(t))return '0:00.0';const m=Math.floor(t/60),
 const getDuration=()=>isVideo()&&Number.isFinite(sourceVideo.duration)?sourceVideo.duration:0;
 const trim=()=>{const duration=getDuration(),start=clamp(Number(byId('trimStart').value)||0,0,Math.max(0,duration-.05));const length=clamp(Number(byId('clipLength').value)||15,.05,60);return {start,end:Math.min(duration,start+length),duration:Math.min(length,duration-start)}};
 const ratio=()=>byId('ratio').value.split(':').map(Number);
-const size=()=>{const [a,b]=ratio(),long=Number(byId('size').value),width=a<=b?Math.round(long*a/b):long,height=a<=b?long:Math.round(long*b/a);return {w:Math.max(2,2*Math.round(width/2)),h:Math.max(2,2*Math.round(height/2))}};
+const size=()=>{const [a,b]=ratio(),long=Number(byId('size').value),width=a<=b?long:Math.round(long*a/b),height=a<=b?Math.round(long*b/a):long;return {w:Math.max(2,2*Math.round(width/2)),h:Math.max(2,2*Math.round(height/2))}};
 function setPreviewSize(){const [a,b]=ratio(),max=640;preview.width=a<=b?Math.round(max*a/b):max;preview.height=a<=b?max:Math.round(max*b/a);byId('previewRatio').textContent=byId('ratio').value+' / LIVE'}
 function redraw(){if(previewCtx)paint(previewCtx,preview.width,preview.height)}
 function paint(ctx,w,h){
