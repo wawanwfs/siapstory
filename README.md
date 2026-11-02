@@ -82,9 +82,11 @@ Open the [Creative Studio](https://wawanwfs.github.io/siapstory/studio.html) to 
 | **Color** | Brightness, contrast, saturation, and cinematic presets |
 | **Finishing** | Warmth, film grain, and vignette |
 | **Live preview** | Inspect the result directly in the browser |
-| **Export** | Save edited photos as PNG |
+| **Export** | Save edited photos as PNG, or export trimmed videos with effects and optional original audio |
+| **Timeline** | Set clip start, duration (up to 60 seconds), play/pause and scrub |
+| **Format** | Auto / MP4 / WebM, selected only if the browser supports recording in that format |
 
-**Local first.** Photo processing takes place in your own browser. Video preview is supported where the browser allows it; video rendering and video export are **not yet supported** in the lightweight published Studio.
+**Local first.** Photo processing takes place in your own browser. Video trim, live color adjustments, original-audio routing, and **real video export** are now available through browser-native recording. Export selects MP4 or WebM according to the browser's encoder capabilities; **MP4 does not automatically guarantee H.264/AAC compatibility** with every social-media app. For maximum compatibility, use a supported browser and test the resulting clip before posting.
 
 ---
 
@@ -103,6 +105,15 @@ flowchart LR
 ```
 
 The published website lives in `dist/` and is deployed as a static site. GitHub Actions keeps the public site updated when its deployment workflow succeeds.
+
+### Video export · Browser compatibility
+
+1. Open [Creative Studio](https://wawanwfs.github.io/siapstory/studio.html) and upload a supported video (MP4/H.264 recommended).
+2. Choose a 9:16 canvas, output resolution, trim start and duration.
+3. Adjust color and text, enable/disable original audio, and choose **Auto** for the container format.
+4. Click **Export edited video**, keep the tab visible, then download and check the result.
+
+**Compatibility notes:** Video export uses `canvas.captureStream()` and `MediaRecorder`. Not all browsers support the same encoders; WebM may be produced instead of MP4. Some browsers can generate MP4 with codecs unsupported by WhatsApp/Instagram. MOV/HEVC files may need conversion before editing. Recording works in real time and cannot prevent compression applied by social apps after uploading.
 
 ### Local preview
 
